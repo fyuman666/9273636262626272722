@@ -3,7 +3,7 @@ from telebot import types
 
 bot_token = '6696438979:AAFQ22gFgWMT-eoVda-a_EZBfE_zkOBCMB0'
 
-access_key = '04116930088'
+access_key = 'beta'
 
 bot = telebot.TeleBot(bot_token)
 
@@ -14,7 +14,7 @@ user_message_counts = {}
 def start(message):
     
     if message.from_user.id in registered_users:
-        bot.send_message(chat_id=message.chat.id, text="Вы уже зарегистрированы.")
+        bot.send_message(chat_id=message.chat.id, text="Вы зарегистрированы.")
     else:
   
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -37,7 +37,7 @@ def register(message):
     markup.add(attack_btn, start_btn)
     
     
-    bot.send_message(chat_id=message.chat.id, text=f"Регистрация успешно завершена, {user_first_name}!", reply_markup=markup)
+    bot.send_message(chat_id=message.chat.id, text=f"Регистрация завершена, {user_first_name}!", reply_markup=markup)
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
@@ -61,11 +61,11 @@ def handle_message(message):
         postflood_btn = types.KeyboardButton(text="POST FLOOD")
         markup.add(cloudflare_btn, ddosguard_btn, httpflood_btn, getflood_btn, postflood_btn)
         
-        # Отправка сообщения с кнопками выбора метода атаки
+      
         bot.send_message(chat_id=sender_id, text="Выберите метод атаки:", reply_markup=markup)
     elif text == "Start Attack":
         
-        bot.send_message(chat_id=sender_id, text="[URL]-[PORT]-[TIME]-[METHOD]")
+        bot.send_message(chat_id=sender_id, text="URL | PORT | TIME | METHOD")
     else:
     
         if sender_id in user_message_counts:
@@ -74,13 +74,11 @@ def handle_message(message):
             user_message_counts[sender_id] = 1
         
     
-        if user_message_counts[sender_id] > 50:
+        if user_message_counts[sender_id] > 500:
             
             bot.send_message(chat_id=message.chat.id, text="Вы превысили лимит сообщений. Ваш аккаунт заблокирован.")
             bot.kick_chat_member(chat_id=message.chat.id, user_id=sender_id)
         else:
-
-            bot.send_message(chat_id=sender_id, text="Доступ запрещен. Неверный ключ.")
-
+            bot.send_message(chat_id=sender_id, text="Доступ запрещен.")
 
 bot.polling()
